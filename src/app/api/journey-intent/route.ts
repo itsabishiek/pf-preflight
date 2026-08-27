@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import { journeyIntentIds, type JourneyIntentResult } from "@/types/journey";
 
 const MAX_DESCRIPTION_LENGTH = 600;
@@ -73,7 +73,9 @@ export async function POST(request: Request) {
         systemInstruction,
         temperature: 0,
         maxOutputTokens: 120,
-        thinkingConfig: { thinkingBudget: 0 },
+        // Gemini 3.6 requires a thinking level; MINIMAL keeps this one-shot
+        // classifier fast while still allowing a complete structured response.
+        thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
         responseMimeType: "application/json",
         responseJsonSchema: responseSchema,
         abortSignal: AbortSignal.timeout(8_000),
@@ -83,7 +85,11 @@ export async function POST(request: Request) {
     if (!result) throw new Error("Invalid journey intent response");
 
     return Response.json({ success: true, result });
-  } catch {
+  } catch (error) {
+    console.error(
+      "[journey-intent] classification failed",
+      error instanceof Error ? error.message : "unknown error",
+    );
     // Classification is an optional assistive feature. Return an application-level
     // fallback instead of an HTTP error so expected provider outages do not create
     // noisy failed-resource errors in the browser.
