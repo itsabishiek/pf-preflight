@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return Response.json({ success: false, fallback: true }, { status: 503 });
+    return Response.json({ success: false, fallback: true });
   }
 
   try {
@@ -83,6 +83,9 @@ export async function POST(request: Request) {
 
     return Response.json({ success: true, result });
   } catch {
-    return Response.json({ success: false, fallback: true }, { status: 503 });
+    // Classification is an optional assistive feature. Return an application-level
+    // fallback instead of an HTTP error so expected provider outages do not create
+    // noisy failed-resource errors in the browser.
+    return Response.json({ success: false, fallback: true });
   }
 }
