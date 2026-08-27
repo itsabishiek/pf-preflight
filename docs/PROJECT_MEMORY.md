@@ -107,3 +107,29 @@ The employment history acts as contextual journey navigation.
 Issue explanation and recovery are tied to the selected transfer.
 
 AI remains intentionally deferred to Phase 4.
+
+## Phase 4 — Assisted Journey Discovery
+
+Users still primarily choose from structured journey options. For users who do not know which service they need, the product provides an optional natural-language discovery experience.
+
+Gemini classifies a description into one of:
+
+* TRANSFER_PF
+* WITHDRAW_PF
+* TRACK_REQUEST
+* FIX_ISSUE
+* UNKNOWN
+
+The user must confirm the suggested journey. Gemini does not determine EPFO eligibility, policy, readiness, claim outcomes, or government procedures.
+
+## AI Architecture
+
+Natural language → Gemini intent classification → User confirmation → Existing deterministic journey
+
+## AI Failure Principle
+
+PF Preflight remains fully usable without Gemini. If Gemini fails or is unavailable, direct journey selection remains available.
+
+## Multilingual AI
+
+Natural-language journey discovery can accept English, Hindi, Tamil, and other supported languages without requiring the user to change the interface language first.

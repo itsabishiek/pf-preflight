@@ -28,6 +28,8 @@ import {
 } from "@/data/mock-member";
 import { getTransferReadiness } from "@/features/transfer/rules/get-transfer-readiness";
 import { getTransferTimeline } from "@/features/transfer/rules/get-transfer-timeline";
+import { AssistedJourneyFinder } from "@/features/journeys/components/assisted-journey-finder";
+import { journeyRegistry } from "@/features/journeys/journey-registry";
 import type {
   EmploymentRecord,
   ReadinessStatus,
@@ -430,16 +432,19 @@ export function TransferFlow() {
               </span>
               <ArrowRight className="text-teal-700" aria-hidden />
             </button>
-            {["Withdraw my PF", "Track a request", "Fix an EPFO issue"].map((label) => (
+            {journeyRegistry
+              .filter((journey) => !journey.implemented && journey.id !== "UNKNOWN")
+              .map((journey) => (
               <div
-                key={label}
+                key={journey.id}
                 className="rounded-2xl border border-slate-200 bg-white/60 p-5 text-slate-500"
               >
-                <b className="block text-slate-700">{label}</b>
+                <b className="block text-slate-700">{journey.title}</b>
                 <span className="text-sm">Coming later</span>
               </div>
             ))}
           </div>
+          <AssistedJourneyFinder onConfirmTransfer={() => setScreen("source")} />
         </section>
       </main>
     );
