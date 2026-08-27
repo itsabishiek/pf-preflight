@@ -72,7 +72,8 @@ export async function POST(request: Request) {
       config: {
         systemInstruction,
         temperature: 0,
-        maxOutputTokens: 100,
+        maxOutputTokens: 120,
+        thinkingConfig: { thinkingBudget: 0 },
         responseMimeType: "application/json",
         responseJsonSchema: responseSchema,
         abortSignal: AbortSignal.timeout(8_000),
