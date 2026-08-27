@@ -1,3 +1,13 @@
+# PF Preflight engineering guide
+
+- Preserve the product thesis: a citizen-first preflight and recovery experience, not a generic EPFO redesign or chatbot.
+- Read `docs/PROJECT_MEMORY.md` before major product or architectural changes.
+- Use synthetic data only. Never connect to real government systems, credentials, or undocumented APIs; never imply government endorsement.
+- Keep business/domain logic separate from UI and avoid unnecessary dependencies or infrastructure.
+- Prefer focused, incremental changes and do not rewrite unrelated code.
+- Keep the experience mobile-first, accessible, calm, and written in plain language.
+- Run relevant lint, type, and build checks after significant changes.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
