@@ -78,7 +78,6 @@ export async function POST(request: Request) {
         thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
         responseMimeType: "application/json",
         responseJsonSchema: responseSchema,
-        abortSignal: AbortSignal.timeout(8_000),
       },
     });
     const result = parseJourneyIntent(JSON.parse(response.text ?? ""));
