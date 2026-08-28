@@ -1,8 +1,12 @@
-# PF Preflight — Project Memory
+# PF Compass — Project Memory
 
 ## Product
 
-PF Preflight
+PF Compass
+
+## Flagship journey
+
+PF Transfer Preflight
 
 ## One-line description
 
@@ -22,7 +26,7 @@ The user may not know whether their records are ready, what a government-side is
 
 ## Primary solution
 
-Transfer Preflight.
+PF Transfer Preflight.
 
 ## Key concept
 
@@ -66,7 +70,7 @@ This is not an AI chatbot for EPFO. It is a preflight and recovery experience th
 
 ## Competitive positioning
 
-A dashboard tells a citizen what happened. PF Preflight should tell them what happened, why, and what they can do next.
+A dashboard tells a citizen what happened. PF Compass should tell them what happened, why, and what they can do next.
 
 ## Design philosophy
 
@@ -128,7 +132,7 @@ Natural language → Gemini intent classification → User confirmation → Exis
 
 ## AI Failure Principle
 
-PF Preflight remains fully usable without Gemini. If Gemini fails or is unavailable, direct journey selection remains available.
+PF Compass remains fully usable without Gemini. If Gemini fails or is unavailable, direct journey selection remains available.
 
 ## Multilingual AI
 
@@ -136,7 +140,7 @@ Natural-language journey discovery can accept English, Hindi, Tamil, and other s
 
 ## Final Product Direction
 
-PF Preflight focuses on one deep citizen journey: PF transfer readiness and issue recovery. The product is intentionally narrow for the hackathon.
+PF Compass focuses on one deep citizen journey: PF Transfer Preflight. The product is intentionally narrow for the hackathon. PF Transfer Preflight is currently the only fully implemented flagship journey; future journeys may sit beneath PF Compass.
 
 ## Product Differentiators
 

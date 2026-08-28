@@ -1,4 +1,4 @@
-# PF Preflight engineering guide
+# PF Compass engineering guide
 
 - Preserve the product thesis: a citizen-first preflight and recovery experience, not a generic EPFO redesign or chatbot.
 - Read `docs/PROJECT_MEMORY.md` before major product or architectural changes.

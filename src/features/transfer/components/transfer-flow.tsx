@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   ArrowDown,
   ArrowLeft,
@@ -39,8 +33,12 @@ import type {
 
 type Screen = "home" | "intent" | "source" | "checking" | TransferStatus;
 
-const previousJobs = mockMember.employmentHistory.filter((record) => !record.isCurrent);
-const destination = mockMember.employmentHistory.find((record) => record.isCurrent)!;
+const previousJobs = mockMember.employmentHistory.filter(
+  (record) => !record.isCurrent,
+);
+const destination = mockMember.employmentHistory.find(
+  (record) => record.isCurrent,
+)!;
 const reference = "PFP-DEMO-48291";
 const preflightStages = [
   "Checking UAN",
@@ -61,8 +59,91 @@ function Logo() {
       <span className="grid h-9 w-9 place-items-center rounded-xl bg-teal-700 text-white">
         <Landmark size={18} aria-hidden />
       </span>
-      <b className="text-lg tracking-tight">PF Preflight</b>
+      <b className="text-lg tracking-tight">PF Compass</b>
     </div>
+  );
+}
+
+function TransferHeroPreview() {
+  const checks = ["UAN", "Identity KYC", "Bank / KYC", "Employment"];
+
+  return (
+    <aside
+      aria-labelledby="hero-preview-title"
+      className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
+    >
+      <div className="rounded-2xl border border-teal-100 bg-[#fbfdfb] p-4 sm:p-5">
+        <p className="text-xs font-bold uppercase tracking-[.14em] text-teal-800">
+          PF Transfer Preflight
+        </p>
+        <h2
+          id="hero-preview-title"
+          className="mt-2 text-lg font-bold text-slate-950"
+        >
+          A clearer transfer journey
+        </h2>
+
+        <section className="mt-5 rounded-xl border border-slate-200 bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[.12em] text-slate-500">
+            Previous employment
+          </p>
+          <p className="mt-1 font-bold text-slate-950">
+            Mosaic Retail Services
+          </p>
+          <p className="text-sm text-slate-600">Jul 2022 to Feb 2025</p>
+        </section>
+
+        <div className="my-3 flex justify-center text-teal-700" aria-hidden>
+          <ArrowDown size={20} />
+        </div>
+
+        <section className="rounded-xl border border-teal-200 bg-teal-50 p-4">
+          <p className="text-xs font-bold uppercase tracking-[.12em] text-teal-800">
+            Transfer preflight
+          </p>
+          <ul className="mt-3 space-y-2 text-sm text-slate-700">
+            {checks.map((check) => (
+              <li key={check} className="flex items-center gap-2">
+                <span
+                  className="grid h-5 w-5 place-items-center rounded-full bg-emerald-100 text-emerald-800"
+                  aria-hidden
+                >
+                  <Check size={13} />
+                </span>
+                {check}
+              </li>
+            ))}
+            <li className="flex items-center gap-2 font-semibold text-rose-800">
+              <span
+                className="grid h-5 w-5 place-items-center rounded-full bg-rose-100"
+                aria-hidden
+              >
+                <CircleAlert size={13} />
+              </span>
+              Service history needs attention
+            </li>
+          </ul>
+          <p className="mt-4 border-t border-teal-200 pt-3 text-sm font-semibold text-slate-800">
+            1 thing to check before submitting
+          </p>
+          <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-teal-800">
+            Review before submitting <ArrowRight size={15} aria-hidden />
+          </p>
+        </section>
+
+        <div className="my-3 flex justify-center text-teal-700" aria-hidden>
+          <ArrowDown size={20} />
+        </div>
+
+        <section className="rounded-xl border border-slate-200 bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[.12em] text-slate-500">
+            Current destination
+          </p>
+          <p className="mt-1 font-bold text-slate-950">Cedar Works India</p>
+          <p className="text-sm text-slate-600">Mar 2025 to Present</p>
+        </section>
+      </div>
+    </aside>
   );
 }
 
@@ -276,7 +357,8 @@ function EmploymentJourneyMap({
       <div className="mt-5 space-y-3">
         {mockMember.employmentHistory.map((job, index) => {
           const selected = job.id === source.id;
-          const affected = job.id === syntheticTransferState.issueEmploymentId && !resolved;
+          const affected =
+            job.id === syntheticTransferState.issueEmploymentId && !resolved;
           const label = job.isCurrent
             ? "Current destination"
             : selected
@@ -288,7 +370,10 @@ function EmploymentJourneyMap({
           return (
             <div key={job.id}>
               {index > 0 && (
-                <div className="mb-3 ml-4 h-5 border-l border-slate-300" aria-hidden />
+                <div
+                  className="mb-3 ml-4 h-5 border-l border-slate-300"
+                  aria-hidden
+                />
               )}
               <button
                 onClick={() => !job.isCurrent && selectSource(job.id)}
@@ -304,7 +389,9 @@ function EmploymentJourneyMap({
                 <span className="text-xs font-bold uppercase tracking-[.12em] text-slate-500">
                   {label}
                 </span>
-                <b className="mt-1 block text-sm text-slate-950">{job.employerName}</b>
+                <b className="mt-1 block text-sm text-slate-950">
+                  {job.employerName}
+                </b>
                 <span className="text-xs text-slate-600">
                   {job.startDate} to {job.endDate ?? "Present"}
                 </span>
@@ -331,14 +418,18 @@ export function TransferFlow() {
   const issueTriggerRef = useRef<HTMLElement | null>(null);
 
   const source = previousJobs.find((job) => job.id === sourceId);
-  const journey = source ? getTransferReadiness(mockMember, source.id, resolved) : undefined;
+  const journey = source
+    ? getTransferReadiness(mockMember, source.id, resolved)
+    : undefined;
   const completedChecks =
     journey?.checks.filter((check) => check.status === "ready").length ?? 0;
   const totalChecks = journey?.checks.length ?? 0;
 
   const openIssue = () => {
     issueTriggerRef.current =
-      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
     setIssueOpen(true);
   };
 
@@ -358,16 +449,22 @@ export function TransferFlow() {
   useEffect(() => {
     if (screen !== "checking") return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const delay = reduced ? 0 : 260;
 
     if (stage < preflightStages.length) {
-      const timer = window.setTimeout(() => setStage((value) => value + 1), delay);
+      const timer = window.setTimeout(
+        () => setStage((value) => value + 1),
+        delay,
+      );
       return () => window.clearTimeout(timer);
     }
 
     const timer = window.setTimeout(
-      () => setScreen(resolved || !journey?.issues.length ? "ready" : "preflight"),
+      () =>
+        setScreen(resolved || !journey?.issues.length ? "ready" : "preflight"),
       delay,
     );
     return () => window.clearTimeout(timer);
@@ -392,28 +489,36 @@ export function TransferFlow() {
           <Logo />
           <span className="text-sm text-slate-600">Independent prototype</span>
         </header>
-        <section className="mx-auto max-w-5xl px-5 py-20">
-          <p className="inline-flex gap-2 rounded-full bg-teal-100 px-3 py-1 text-sm font-semibold text-teal-900">
-            <ShieldCheck size={16} aria-hidden />
-            PF transfer preflight
-          </p>
-          <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl">
-            Transferring your PF?
-            <br />
-            <span className="text-teal-800">Check it before</span> you submit.
-          </h1>
-          <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
-            Understand your transfer, catch common issues early, and know what
-            to do next.
-          </p>
-          <button onClick={() => setScreen("intent")} className={`mt-8 ${primaryButton}`}>
-            Check my transfer
-            <ArrowRight size={18} aria-hidden />
-          </button>
-          <p className="mt-5 flex gap-2 text-sm text-slate-500">
-            <LockKeyhole size={15} aria-hidden />
-            Fictional data only. Not an official EPFO service.
-          </p>
+        <section className="mx-auto grid max-w-6xl gap-12 px-5 py-4 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+          <div>
+            <p className="inline-flex gap-2 rounded-full bg-teal-100 px-3 py-1 text-sm font-semibold text-teal-900">
+              <ShieldCheck size={16} aria-hidden />
+              PF Transfer Preflight
+            </p>
+            <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl">
+              Transferring your PF?
+              <br />
+              <span className="text-teal-800">Check it before</span> you submit.
+            </h1>
+            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
+              Understand your transfer, catch common issues early, and know what
+              to do next.
+            </p>
+            <button
+              onClick={() => setScreen("intent")}
+              className={`mt-8 ${primaryButton}`}
+            >
+              Check my transfer
+              <ArrowRight size={18} aria-hidden />
+            </button>
+            <p className="mt-5 flex gap-2 text-sm text-slate-500">
+              <LockKeyhole size={15} aria-hidden />
+              Fictional data only. Not an official EPFO service.
+            </p>
+          </div>
+          <div className="flex justify-center lg:justify-end">
+            <TransferHeroPreview />
+          </div>
         </section>
       </main>
     );
@@ -427,7 +532,9 @@ export function TransferFlow() {
           <p className="text-sm font-bold uppercase tracking-[.14em] text-teal-800">
             Start here
           </p>
-          <h1 className="mt-2 text-3xl font-bold">What would you like to do?</h1>
+          <h1 className="mt-2 text-3xl font-bold">
+            What would you like to do?
+          </h1>
           <div className="mt-7 space-y-3">
             <button
               onClick={() => setScreen("source")}
@@ -442,18 +549,22 @@ export function TransferFlow() {
               <ArrowRight className="text-teal-700" aria-hidden />
             </button>
             {journeyRegistry
-              .filter((journey) => !journey.implemented && journey.id !== "UNKNOWN")
+              .filter(
+                (journey) => !journey.implemented && journey.id !== "UNKNOWN",
+              )
               .map((journey) => (
-              <div
-                key={journey.id}
-                className="rounded-2xl border border-slate-200 bg-white/60 p-5 text-slate-500"
-              >
-                <b className="block text-slate-700">{journey.title}</b>
-                <span className="text-sm">Coming later</span>
-              </div>
-            ))}
+                <div
+                  key={journey.id}
+                  className="rounded-2xl border border-slate-200 bg-white/60 p-5 text-slate-500"
+                >
+                  <b className="block text-slate-700">{journey.title}</b>
+                  <span className="text-sm">Coming later</span>
+                </div>
+              ))}
           </div>
-          <AssistedJourneyFinder onConfirmTransfer={() => setScreen("source")} />
+          <AssistedJourneyFinder
+            onConfirmTransfer={() => setScreen("source")}
+          />
         </section>
       </main>
     );
@@ -465,7 +576,7 @@ export function TransferFlow() {
         <Header back={() => setScreen("intent")} reset={reset} />
         <section className="mx-auto max-w-4xl px-5 py-10">
           <p className="text-sm font-bold uppercase tracking-[.14em] text-teal-800">
-            PF transfer
+            PF Transfer Preflight
           </p>
           <h1 className="mt-2 text-3xl font-bold">
             Which old PF record are you moving from?
@@ -479,7 +590,8 @@ export function TransferFlow() {
             <section className="space-y-3">
               <h2 className="text-base font-bold">Previous employment</h2>
               {previousJobs.map((job) => {
-                const affected = job.id === syntheticTransferState.issueEmploymentId;
+                const affected =
+                  job.id === syntheticTransferState.issueEmploymentId;
                 const selected = job.id === sourceId;
 
                 return (
@@ -495,7 +607,9 @@ export function TransferFlow() {
                   >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <p className="font-bold text-slate-950">{job.employerName}</p>
+                        <p className="font-bold text-slate-950">
+                          {job.employerName}
+                        </p>
                         <p className="mt-1 text-sm text-slate-600">
                           {job.startDate} to {job.endDate}
                         </p>
@@ -521,7 +635,9 @@ export function TransferFlow() {
             <section>
               <h2 className="text-base font-bold">Current destination</h2>
               <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-5">
-                <p className="font-bold text-slate-950">{destination.employerName}</p>
+                <p className="font-bold text-slate-950">
+                  {destination.employerName}
+                </p>
                 <p className="mt-1 text-sm text-slate-600">
                   {destination.startDate} to Present
                 </p>
@@ -534,7 +650,10 @@ export function TransferFlow() {
                   <p className="mt-4 font-semibold text-slate-800">
                     We will check this transfer path before the demo submission.
                   </p>
-                  <button onClick={startCheck} className={`mt-5 w-full ${primaryButton}`}>
+                  <button
+                    onClick={startCheck}
+                    className={`mt-5 w-full ${primaryButton}`}
+                  >
                     Check this transfer
                     <ArrowRight size={18} aria-hidden />
                   </button>
@@ -556,7 +675,9 @@ export function TransferFlow() {
         <section className="mx-auto max-w-2xl px-5 py-12">
           <TransferContext source={source} />
           <h1 className="mt-8 text-3xl font-bold">
-            {resolved ? "Updating your preflight" : "We are checking this transfer for you"}
+            {resolved
+              ? "Updating your preflight"
+              : "We are checking this transfer for you"}
           </h1>
           <p className="mt-2 text-slate-600">
             {resolved
@@ -581,7 +702,9 @@ export function TransferFlow() {
                 </span>
                 <span className="font-medium">
                   {label}
-                  {index === preflightStages.length - 1 && !resolved && index < stage
+                  {index === preflightStages.length - 1 &&
+                  !resolved &&
+                  index < stage
                     ? " - needs attention"
                     : ""}
                 </span>
@@ -639,7 +762,10 @@ export function TransferFlow() {
               </div>
 
               {hasIssue ? (
-                <button onClick={openIssue} className={`mt-5 w-full sm:w-auto ${primaryButton}`}>
+                <button
+                  onClick={openIssue}
+                  className={`mt-5 w-full sm:w-auto ${primaryButton}`}
+                >
                   Review issue
                   <ArrowRight size={18} aria-hidden />
                 </button>
@@ -651,7 +777,11 @@ export function TransferFlow() {
                   <ul className="mt-3 grid gap-2 text-sm text-slate-700 sm:grid-cols-2">
                     {journey.checks.map((check) => (
                       <li key={check.id} className="flex items-center gap-2">
-                        <Check size={16} className="text-emerald-700" aria-hidden />
+                        <Check
+                          size={16}
+                          className="text-emerald-700"
+                          aria-hidden
+                        />
                         {check.label}
                       </li>
                     ))}
@@ -669,7 +799,11 @@ export function TransferFlow() {
           </div>
         </section>
         {issueOpen && (
-          <IssuePanel source={source} close={closeIssue} resolve={resolveIssue} />
+          <IssuePanel
+            source={source}
+            close={closeIssue}
+            resolve={resolveIssue}
+          />
         )}
       </main>
     );
@@ -698,8 +832,8 @@ export function TransferFlow() {
             <section className="rounded-2xl border border-slate-200 bg-white p-5">
               <h2 className="font-bold">Important</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                This prototype checks common readiness conditions. Government-side
-                validations may involve additional information.
+                This prototype checks common readiness conditions.
+                Government-side validations may involve additional information.
               </p>
             </section>
           </div>
@@ -707,7 +841,10 @@ export function TransferFlow() {
             <button onClick={() => setScreen("ready")} className={quietButton}>
               Go back
             </button>
-            <button onClick={() => setScreen("submitted")} className={primaryButton}>
+            <button
+              onClick={() => setScreen("submitted")}
+              className={primaryButton}
+            >
               Submit transfer
               <ArrowRight size={18} aria-hidden />
             </button>
@@ -726,7 +863,9 @@ export function TransferFlow() {
           <p className="mt-7 text-sm font-bold uppercase tracking-[.14em] text-rose-800">
             Needs attention
           </p>
-          <h1 className="mt-2 text-3xl font-bold">Your transfer needs attention</h1>
+          <h1 className="mt-2 text-3xl font-bold">
+            Your transfer needs attention
+          </h1>
           <section className="mt-5 rounded-2xl border border-rose-200 bg-rose-50 p-5">
             <h2 className="font-bold">What happened?</h2>
             <p className="mt-1 text-sm text-slate-700">
@@ -738,8 +877,8 @@ export function TransferFlow() {
             </p>
             <h2 className="mt-4 font-bold">What should you do first?</h2>
             <p className="mt-1 text-sm text-slate-700">
-              Start by reviewing the previous employment record. Then resolve the
-              simulated issue and run preflight again.
+              Start by reviewing the previous employment record. Then resolve
+              the simulated issue and run preflight again.
             </p>
           </section>
           <button
@@ -832,30 +971,32 @@ function TrackingScreen({
           <h2 className="font-bold">Your transfer journey</h2>
           <ol className="mt-4 space-y-4">
             <TimelineItem title="Preflight" detail="Ready" state="done" />
-            {(["submitted", "processing", "completed"] as const).map((status) => {
-              const event = events.find((item) => item.status === status);
-              const isCurrent = screen === status;
-              const reached = Boolean(event);
+            {(["submitted", "processing", "completed"] as const).map(
+              (status) => {
+                const event = events.find((item) => item.status === status);
+                const isCurrent = screen === status;
+                const reached = Boolean(event);
 
-              return (
-                <TimelineItem
-                  key={status}
-                  title={status[0].toUpperCase() + status.slice(1)}
-                  detail={
-                    isCurrent
-                      ? status === "completed"
-                        ? "Journey complete"
-                        : status === "submitted"
-                          ? "Request submitted"
-                          : "Current step"
-                      : reached
-                        ? event?.description ?? ""
-                        : "Not reached yet"
-                  }
-                  state={isCurrent ? "current" : reached ? "done" : "future"}
-                />
-              );
-            })}
+                return (
+                  <TimelineItem
+                    key={status}
+                    title={status[0].toUpperCase() + status.slice(1)}
+                    detail={
+                      isCurrent
+                        ? status === "completed"
+                          ? "Journey complete"
+                          : status === "submitted"
+                            ? "Request submitted"
+                            : "Current step"
+                        : reached
+                          ? (event?.description ?? "")
+                          : "Not reached yet"
+                    }
+                    state={isCurrent ? "current" : reached ? "done" : "future"}
+                  />
+                );
+              },
+            )}
           </ol>
         </section>
 
@@ -893,7 +1034,13 @@ function TrackingScreen({
   );
 }
 
-function InfoBlock({ title, children }: { title: string; children: ReactNode }) {
+function InfoBlock({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-4">
       <h2 className="text-sm font-bold">{title}</h2>
@@ -974,7 +1121,11 @@ function CheckRow({
           aria-label={`${open ? "Hide" : "Show"} details for ${check.label}`}
           className="h-8 rounded-lg px-1 text-slate-600 focus:outline-none focus:ring-4 focus:ring-teal-100"
         >
-          <ChevronDown className={open ? "rotate-180" : ""} size={18} aria-hidden />
+          <ChevronDown
+            className={open ? "rotate-180" : ""}
+            size={18}
+            aria-hidden
+          />
         </button>
       </div>
       {open && (
@@ -989,8 +1140,8 @@ function CheckRow({
           </p>
           {blocked && (
             <p className="mt-2">
-              <b>Do I need to act?</b> Yes, review the affected employment record
-              before continuing.
+              <b>Do I need to act?</b> Yes, review the affected employment
+              record before continuing.
             </p>
           )}
         </div>
