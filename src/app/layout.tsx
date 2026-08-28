@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PF Preflight | Check before you submit",
-  description: "A fictional PF transfer readiness prototype.",
+  description: "A synthetic PF transfer preflight and recovery prototype.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -19,7 +19,7 @@ const systemInstruction = `You classify a citizen's short description into one p
 
 Allowed categories: TRANSFER_PF, WITHDRAW_PF, TRACK_REQUEST, FIX_ISSUE, UNKNOWN.
 
-Examples: “I changed jobs and my old PF has not transferred” is TRANSFER_PF. “I want to withdraw money from my PF” is WITHDRAW_PF. “I submitted a request and want its status” is TRACK_REQUEST. “My PF claim was rejected and I need to fix it” is FIX_ISSUE. General questions such as “What is UAN?” are UNKNOWN.
+Examples: "I changed jobs and my old PF has not transferred" is TRANSFER_PF. "I want to withdraw money from my PF" is WITHDRAW_PF. "I submitted a request and want its status" is TRACK_REQUEST. "My PF claim was rejected and I need to fix it" is FIX_ISSUE. General questions such as "What is UAN?" are UNKNOWN.
 
 Use TRANSFER_PF when the user describes changing jobs and moving an old PF, even if they say it has not moved yet. Use FIX_ISSUE only for an explicitly rejected, failed, or unresolved claim/request. If two intents are genuinely ambiguous, return UNKNOWN.
 
@@ -77,8 +77,7 @@ export async function POST(request: Request) {
         systemInstruction,
         temperature: 0,
         maxOutputTokens: 120,
-        // Gemini 3.6 requires a thinking level; MINIMAL keeps this one-shot
-        // classifier fast while still allowing a complete structured response.
+        // Keep this one-shot classifier fast while returning complete JSON.
         thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
         responseMimeType: "application/json",
         responseJsonSchema: responseSchema,

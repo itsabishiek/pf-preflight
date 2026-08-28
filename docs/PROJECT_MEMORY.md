@@ -133,3 +133,21 @@ PF Preflight remains fully usable without Gemini. If Gemini fails or is unavaila
 ## Multilingual AI
 
 Natural-language journey discovery can accept English, Hindi, Tamil, and other supported languages without requiring the user to change the interface language first.
+
+## Final Product Direction
+
+PF Preflight focuses on one deep citizen journey: PF transfer readiness and issue recovery. The product is intentionally narrow for the hackathon.
+
+## Product Differentiators
+
+1. Preflight — identify common readiness issues before submission.
+2. Recovery — explain what went wrong and what the citizen should do next.
+3. Assisted discovery — optionally help users identify the correct starting journey from natural language.
+
+## AI Role
+
+Gemini is only used for optional journey-intent classification. The core transfer flow remains deterministic.
+
+## Final Demo
+
+The preferred judge demonstration starts with: “I changed jobs and my PF hasn't transferred.” The system identifies Transfer my PF, confirms the journey, runs preflight, exposes a simulated issue, explains it, resolves it, submits, tracks, demonstrates a recovery state, and completes the simulated journey.

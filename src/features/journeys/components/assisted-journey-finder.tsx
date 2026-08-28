@@ -102,6 +102,9 @@ export function AssistedJourneyFinder({ onConfirmTransfer }: { onConfirmTransfer
           <p className="text-sm font-semibold text-teal-800">We think you need:</p>
           <h3 className="mt-1 text-xl font-bold text-slate-950">{suggestion.title}</h3>
           <p className="mt-2 text-sm leading-6 text-slate-700">{result?.reason}</p>
+          <p className="mt-3 text-xs text-slate-600">
+            Suggested starting point based on what you described.
+          </p>
           <p className="mt-4 text-sm font-semibold text-slate-800">Is this what you need?</p>
           <div className="mt-3 flex flex-col gap-3 sm:flex-row">
             <button onClick={confirmSuggestion} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-teal-700 px-5 py-3 font-semibold text-white hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-teal-200">Yes, continue<ArrowRight size={18} aria-hidden /></button>

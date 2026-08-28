@@ -42,6 +42,14 @@ type Screen = "home" | "intent" | "source" | "checking" | TransferStatus;
 const previousJobs = mockMember.employmentHistory.filter((record) => !record.isCurrent);
 const destination = mockMember.employmentHistory.find((record) => record.isCurrent)!;
 const reference = "PFP-DEMO-48291";
+const preflightStages = [
+  "Checking UAN",
+  "Checking identity KYC",
+  "Checking bank KYC",
+  "Checking current employment",
+  "Checking Date of Exit",
+  "Checking service history",
+];
 const primaryButton =
   "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-teal-700 px-5 py-3 font-semibold text-white hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-teal-200";
 const quietButton =
@@ -167,6 +175,7 @@ function IssuePanel({
       role="dialog"
       aria-modal="true"
       aria-labelledby="issue-title"
+      aria-describedby="issue-summary"
       className="fixed inset-0 z-20 grid place-items-end bg-slate-950/35 p-3 sm:place-items-center"
     >
       <div className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
@@ -198,7 +207,7 @@ function IssuePanel({
         </section>
 
         <h3 className="mt-5 font-bold">What we found</h3>
-        <p className="mt-1 text-sm leading-6 text-slate-600">
+        <p id="issue-summary" className="mt-1 text-sm leading-6 text-slate-600">
           A potential service-history mismatch was detected in this simulated
           record.
         </p>
@@ -352,7 +361,7 @@ export function TransferFlow() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const delay = reduced ? 0 : 260;
 
-    if (stage < 5) {
+    if (stage < preflightStages.length) {
       const timer = window.setTimeout(() => setStage((value) => value + 1), delay);
       return () => window.clearTimeout(timer);
     }
@@ -386,7 +395,7 @@ export function TransferFlow() {
         <section className="mx-auto max-w-5xl px-5 py-20">
           <p className="inline-flex gap-2 rounded-full bg-teal-100 px-3 py-1 text-sm font-semibold text-teal-900">
             <ShieldCheck size={16} aria-hidden />
-            Transfer readiness, in plain language
+            PF transfer preflight
           </p>
           <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl">
             Transferring your PF?
@@ -394,8 +403,8 @@ export function TransferFlow() {
             <span className="text-teal-800">Check it before</span> you submit.
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
-            Spot common issues in your employment records before a transfer
-            request is submitted.
+            Understand your transfer, catch common issues early, and know what
+            to do next.
           </p>
           <button onClick={() => setScreen("intent")} className={`mt-8 ${primaryButton}`}>
             Check my transfer
@@ -462,7 +471,7 @@ export function TransferFlow() {
             Which old PF record are you moving from?
           </h1>
           <p className="mt-3 max-w-2xl text-slate-600">
-            Choose the previous employment record that should move into your
+            Choose the previous employment record you want to transfer into your
             current employment.
           </p>
 
@@ -541,24 +550,21 @@ export function TransferFlow() {
   if (!source || !journey) return null;
 
   if (screen === "checking") {
-    const labels = [
-      "Checking UAN",
-      "Checking KYC",
-      "Checking employment",
-      "Checking Date of Exit",
-      "Checking service history",
-    ];
-
     return (
       <main className="min-h-screen bg-[#f7f8f5]">
         <Header back={() => setScreen("source")} reset={reset} />
         <section className="mx-auto max-w-2xl px-5 py-12">
           <TransferContext source={source} />
           <h1 className="mt-8 text-3xl font-bold">
-            {resolved ? "Updating your preflight" : "Checking this transfer"}
+            {resolved ? "Updating your preflight" : "We are checking this transfer for you"}
           </h1>
+          <p className="mt-2 text-slate-600">
+            {resolved
+              ? "Rechecking your transfer with the simulated update."
+              : "Reviewing common readiness checks for this transfer path."}
+          </p>
           <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
-            {labels.map((label, index) => (
+            {preflightStages.map((label, index) => (
               <div
                 key={label}
                 className="flex items-center gap-3 border-b border-slate-100 py-3 last:border-0"
@@ -575,7 +581,9 @@ export function TransferFlow() {
                 </span>
                 <span className="font-medium">
                   {label}
-                  {index === 4 && !resolved && index < stage ? " - needs attention" : ""}
+                  {index === preflightStages.length - 1 && !resolved && index < stage
+                    ? " - needs attention"
+                    : ""}
                 </span>
               </div>
             ))}
@@ -615,7 +623,7 @@ export function TransferFlow() {
                 <h1 className="text-2xl font-bold">
                   {hasIssue
                     ? "We found 1 thing to check before you submit."
-                    : "You are ready to continue"}
+                    : "You're ready to continue"}
                 </h1>
                 <p className="mt-2 text-sm leading-6 text-slate-700">
                   {hasIssue
@@ -683,8 +691,8 @@ export function TransferFlow() {
             <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
               <h2 className="font-bold">Readiness</h2>
               <p className="mt-2 text-sm text-slate-700">
-                Common checks complete for UAN, KYC, employment, Date of Exit,
-                and service history.
+                Common checks complete for UAN, identity KYC, bank KYC,
+                employment, Date of Exit, and service history.
               </p>
             </section>
             <section className="rounded-2xl border border-slate-200 bg-white p-5">
@@ -728,10 +736,10 @@ export function TransferFlow() {
             <p className="mt-1 text-sm leading-6 text-slate-700">
               {serviceHistoryIssue.whyItMatters}
             </p>
-            <h2 className="mt-4 font-bold">What should you do?</h2>
+            <h2 className="mt-4 font-bold">What should you do first?</h2>
             <p className="mt-1 text-sm text-slate-700">
-              Review the previous employment record, resolve the simulated issue,
-              and run preflight again.
+              Start by reviewing the previous employment record. Then resolve the
+              simulated issue and run preflight again.
             </p>
           </section>
           <button
@@ -775,7 +783,7 @@ function TrackingScreen({
   const activeTitle = useMemo(() => {
     if (screen === "submitted") return "Your transfer has been submitted";
     if (screen === "processing") return "Your transfer is being processed";
-    return "Your simulated transfer is complete";
+    return "Transfer journey complete";
   }, [screen]);
   const nextText =
     screen === "submitted"
@@ -799,7 +807,7 @@ function TrackingScreen({
         <section className="mt-5 grid gap-4 sm:grid-cols-3">
           <InfoBlock title="What is happening?">
             {screen === "completed"
-              ? "The simulated transfer has reached completion."
+              ? "The simulated transfer has completed successfully."
               : "Your simulated transfer is progressing in the demo."}
           </InfoBlock>
           <InfoBlock title="Do I need to do anything?">
@@ -835,7 +843,11 @@ function TrackingScreen({
                   title={status[0].toUpperCase() + status.slice(1)}
                   detail={
                     isCurrent
-                      ? "Current step"
+                      ? status === "completed"
+                        ? "Journey complete"
+                        : status === "submitted"
+                          ? "Request submitted"
+                          : "Current step"
                       : reached
                         ? event?.description ?? ""
                         : "Not reached yet"
